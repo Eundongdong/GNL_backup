@@ -1,20 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eunjkim <eunjkim@student.42seoul.k>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/16 14:59:33 by eunjkim           #+#    #+#             */
+/*   Updated: 2021/03/16 16:20:00 by eunjkim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line_bonus.h"
 
 size_t		ft_strlen(const char *str)
 {
-	int n;
+	int					n;
 
 	if (!str)
-		return(0);
+		return (0);
 	n = 0;
 	while (str[n] != '\0')
 		n++;
 	return (n);
 }
 
-void	*ft_memcpy(void *ptr, const void *src, unsigned int n)
+void		*ft_memcpy(void *ptr, const void *src, unsigned int n)
 {
-	const void	*d;
+	const void			*d;
 
 	d = ptr;
 	if (!ptr && !src)
@@ -24,10 +36,10 @@ void	*ft_memcpy(void *ptr, const void *src, unsigned int n)
 	return (ptr);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+size_t		ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	size_t s_length;
-	size_t i;
+	size_t				s_length;
+	size_t				i;
 
 	s_length = 0;
 	i = 0;
@@ -49,16 +61,16 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (s_length);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char		*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t		len1;
-	size_t		len2;
-	char		*result;
+	size_t				len1;
+	size_t				len2;
+	char				*result;
 
 	if (s1 == 0 && s2 == 0)
 		return (NULL);
 	if (s1 == 0)
-		return(ft_strdup(s2));
+		return (ft_strdup(s2));
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	if (!(result = malloc(len1 + len2 + 1)))
@@ -69,13 +81,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (result);
 }
 
-char	*ft_strdup(const char *s)
+char		*ft_strdup(const char *s)
 {
-	char	*result;
-	int		len;
-	size_t	i;
+	char			*result;
+	int				len;
+	size_t			i;
 
-	if(!s)
+	if (!s)
 		return (NULL);
 	len = ft_strlen(s) + 1;
 	result = malloc(len);

@@ -32,7 +32,7 @@ int					save_cut(char **b_buf, char **line, int check)
 	int				len;
 
 	(*b_buf)[check] = '\0';
-	*line = ft_strdup(*b_buf); //b_buf line에 복제
+	*line = ft_strdup(*b_buf);
 	len = ft_strlen(*b_buf + check + 1);
 	if (len == 0)
 	{
@@ -46,35 +46,27 @@ int					save_cut(char **b_buf, char **line, int check)
 	return (1);
 }
 
-int					save_end(char **b_buf,char **line)
+int					save_end(char **b_buf, char **line)
 {
 	int		check;
 
-	//printf("\n~~~\n%s\n~~~",*b_buf);
 	if (!(*b_buf))
 	{
 		*line = ft_strdup("");
-		return (0);//EOF
+		return (0);
 	}
 	else
 	{
-		
 		if ((check = nl_exist(*b_buf)) >= 0)
-			return(save_cut(b_buf,line,check));
+			return (save_cut(b_buf, line, check));
 	}
-	// 여기서부터 이상함
 	*line = ft_strdup(*b_buf);
 	free(*b_buf);
 	*b_buf = 0;
 	return (0);
-	
-	//backup이 비었는지 if 로 확인
-	//안비어있으면 save_cut으로 다시
-	//비어있으면 EOF
-	//read에서 -1이 나올때 예외처리
 }
 
-int 				get_next_line(int fd, char **line)
+int					get_next_line(int fd, char **line)
 {
 	char			t_buf[BUFFER_SIZE + 1];
 	static char		*b_buf[OPEN_MAX];
@@ -83,44 +75,19 @@ int 				get_next_line(int fd, char **line)
 	char			*temp;
 
 	if (fd < 0 || fd > OPEN_MAX || line == 0 || BUFFER_SIZE <= 0)
-			return (-1); 
-			
-	while((r_size = read(fd,t_buf,BUFFER_SIZE))> 0) //몇 개 읽었는지 r_size에 저장
-	{	
-
+		return (-1);
+	while ((r_size = read(fd, t_buf, BUFFER_SIZE)) > 0)
+	{
 		temp = NULL;
-		t_buf[r_size] = '\0'; //문자열로 사용하고자 끝에 널 추가
-		temp = ft_strjoin(b_buf[fd],t_buf);
+		t_buf[r_size] = '\0';
+		temp = ft_strjoin(b_buf[fd], t_buf);
 		free(b_buf[fd]);
 		b_buf[fd] = temp;
-		//printf("===\n%s\n===",b_buf[fd]);
-		//백업에 읽은거 추가하기
 		check = nl_exist(b_buf[fd]);
-		//printf("$$$$$$$\n%d\n$$$$$",check);
 		if (check >= 0)
-				return(save_cut(&b_buf[fd],line,check));//\n이 있으니까 그 전까지 line에 저장 그 후는 b_buf에 저장
+			return (save_cut(&b_buf[fd], line, check));
 	}
 	if (r_size == -1)
-		return(-1);
-	//printf("#####\n%s\n#####",b_buf[fd]);
-	return(save_end(&b_buf[fd],line));//EOF or \n이 없을떄
+		return (-1);
+	return (save_end(&b_buf[fd], line));
 }
-
-// int 				main()
-// {
-// 	int r;
-// 	int fd;
-// 	char *line;
-
-// 	fd = open("test.txt", O_RDONLY);
-
-// 	while ((r = get_next_line(fd, &line)) > 0)
-// 	{
-// 		printf(" %d %s\n", r,line);
-// 		free(line);
-// 		line = NULL;
-// 	}
-// 	printf("%d %s\n",r,line);
-// 	free(line);
-// 	line = NULL;
-// }
